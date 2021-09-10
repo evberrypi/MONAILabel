@@ -48,9 +48,9 @@ parser.add_argument('--dropout_prob', default=0, type=float)
 parser.add_argument('--model_name', default=None)
 
 # Directory & Json
-parser.add_argument('--base_dir', default='/home/vishwesh/experiments/active_learning_dropout_zero_to_two_test', type=str)
+parser.add_argument('--base_dir', default='/home/vishwesh/experiments/active_learning_dropout_zero_two_test_v2', type=str)
 parser.add_argument('--data_root', default='/home/vishwesh/experiments/monai_label_spleen/data', type=str)
-parser.add_argument('--json_path', default='/home/vishwesh/experiments/monai_label_spleen/data/dataset_10_init_v2.json', type=str)
+parser.add_argument('--json_path', default='/home/vishwesh/experiments/monai_label_spleen/data/dataset_10_init_v1.json', type=str)
 
 # Active learning parameters
 parser.add_argument('--active_iters', default=5, type=int)
@@ -58,7 +58,6 @@ parser.add_argument('--dropout_ratio', default=0.2, type=float)
 parser.add_argument('--mc_number', default=10, type=int)
 parser.add_argument('--queries', default=5, type=int)
 parser.add_argument('--random_strategy', default=0, type=int)
-
 
 # DL Hyper-parameters
 parser.add_argument('--epochs', default=2, type=int)
@@ -304,7 +303,7 @@ def main():
         strides=(2, 2, 2, 2),
         num_res_units=2,
         norm=Norm.BATCH,
-        dropout=0.0
+        dropout=0
     )
 
     # Active Learning iterations
@@ -381,7 +380,6 @@ def main():
         al_app.train(request=request)
         print('Training Completed for Active Iteration: {}'.format(active_iter))
 
-
         if args.random_strategy == 0:
 
             print('Prepping to run inference on unlabeled pool of data')
@@ -391,6 +389,8 @@ def main():
             device = torch.device("cuda:0")
             ckpt = torch.load(prev_best_ckpt)
 
+            # TODO Network 2 with actual Dropout
+            # Model Definition
             network2 = UNet(
                 dimensions=3,
                 in_channels=1,
@@ -463,7 +463,6 @@ def main():
                     plt.clf()
                     plt.close(1)
                     counter = counter + 1
-
 
             print('Inference for Uncertainty Complete, working on ranking the unlabeled data')
 
