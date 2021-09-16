@@ -49,6 +49,9 @@ stages:
         python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
         python -c 'import monailabel; print(monailabel.__file__)'
         python -m pip uninstall -y monailabel
+        cp monailabel*.tar.gz /tmp
+        rm monailabel*.tar.gz
+
 
         # install test utilities
         python -m pip install pytest
@@ -66,7 +69,7 @@ stages:
 
     - task: PublishPipelineArtifact@1 #this publishes the build artifact within Azure Pipelines
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/dist/monailabel*.whl
+        targetPath: /tmp/monailabel*.whl
         artifactName: monai-release
     - task: GitHubRelease@0
       inputs:
@@ -77,4 +80,4 @@ stages:
         tagSource: 'manual'
         tag: 0.2.0
         addChangeLog: false 
-        assets: $(System.DefaultWorkingDirectory)/dist/monailabel*.whl
+        assets: /tmp/monailabel*.whl
