@@ -59,7 +59,9 @@ stages:
         cd "$root_dir"
         rm -r "$tmp_dir"
         rm -rf monailabel/
-        ls -la .
+        ls -la dist
+        pwd
+        ls $(Pipeline.Workspace)
       displayName: Build MONAI Label w OHIF
     - task: PublishPipelineArtifact@1
       inputs:
