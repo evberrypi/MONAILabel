@@ -1,4 +1,7 @@
-trigger: none
+trigger: 
+  tags:
+    include:
+    - '*' 
 
 stages:
 - stage: 'Build'
