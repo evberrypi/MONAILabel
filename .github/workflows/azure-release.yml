@@ -2,9 +2,9 @@ trigger:
   tags:
     include:
     - '*'
-  branches: # TODO: Remove before PR
-    include:
-      - '*'
+  # branches: # TODO: Remove before PR
+  #   include:
+  #     - '*'
 
 stages:
 - stage: 'Build'
