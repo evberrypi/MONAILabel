@@ -56,11 +56,9 @@ stages:
       displayName: 'Install from whl'
     - script: |
         python -m pip install pytest
-      displayName: 'Install test utilities'
-    - script: |
         # Start the monailabel server in the background
         # and run the integration tests
-        $root_dir/runtests.sh --net
+        ./runtests.sh --net
       displayName: 'Integration Tests'
     - task: GitHubRelease@0
       inputs:
@@ -70,4 +68,4 @@ stages:
         tagSource: 'manual'
         tag: 0.2.0
         addChangeLog: false 
-        assets: /tmp/monailabel*.whl
+        assets: /dist/monailabel*.whl
