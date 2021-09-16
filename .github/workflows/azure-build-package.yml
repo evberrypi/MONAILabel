@@ -9,16 +9,18 @@ pr:
 stages:
 - stage: 'Test'
   jobs:
-  - job: runTests
+  - job: RunTests
     pool:
       vmImage: ubuntu-20.04
     strategy:
       matrix:
-        Python37:
-          python.version: '3.7'
-        Python38:
+        Python3.6:
+          python.version: '3.6'
+          Python3.7:
+            python.version: '3.7'
+        Python3.8:
           python.version: '3.8'
-        Python39:
+        Python3.9:
           python.version: '3.9'
         # maxParallel: 4
     steps:

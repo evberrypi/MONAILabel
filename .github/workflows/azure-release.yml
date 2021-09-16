@@ -2,9 +2,6 @@ trigger:
   tags:
     include:
     - '*'
-  # branches: # TODO: Remove before PR
-  #   include:
-  #     - '*'
 
 stages:
 - stage: 'Build'
@@ -36,47 +33,39 @@ stages:
         rm -r build monailabel.egg-info
         cd "$tmp_dir"
         ls -al
-
-        # install from tar.gz
+      displayName: Prep
+    - script: |
         python -m pip install monailabel*.tar.gz
         python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
         python -c 'import monailabel; print(monailabel.__file__)'
         python -m pip uninstall -y monailabel
         rm monailabel*.tar.gz
-
-        # install from wheel
+      displayName: 'Install from tar.gz'
+    - script: |
         python -m pip install monailabel*.whl
         python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
         python -c 'import monailabel; print(monailabel.__file__)'
         python -m pip uninstall -y monailabel
         cp monailabel*.whl /tmp
         rm monailabel*.whl
-
-
-        # install test utilities
+      displayName: 'Install from whl'
+    - script: |
         python -m pip install pytest
-
-        # start the monailabel server in the background
-        # and run the integration tests
-        $root_dir/runtests.sh --net
-
-        # cleanup
-        cd "$root_dir"
-        rm -r "$tmp_dir"
-        rm -rf monailabel/
-        ls -la .
-      displayName: 'Build and test source archive and wheel file'
-
+      displayName: 'Install test utilities'
     - task: PublishPipelineArtifact@1 #this publishes the build artifact within Azure Pipelines
       inputs:
         targetPath: /tmp/monailabel*.whl
         artifactName: monai-release
+    - script: |
+        # Start the monailabel server in the background
+        # and run the integration tests
+        $root_dir/runtests.sh --net
+      displayName: 'Integration Tests'
     - task: GitHubRelease@0
       inputs:
         gitHubConnection: monailabel
         repositoryName: '$(Build.Repository.Name)'
         action: 'edit'
-        # target: '$(tagName)'
         tagSource: 'manual'
         tag: 0.2.0
         addChangeLog: false 
