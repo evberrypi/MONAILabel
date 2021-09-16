@@ -25,17 +25,10 @@ stages:
     - task: UsePythonVersion@0
       inputs:
         versionSpec: $(python.version)
-    - task: PythonScript@0
-      inputs:
-        scriptSource: 'inline'
-        script: |
-          pip install --upgrade pip wheel
-          pip install -r requirements-dev.txt
+    - script: |
+        python3 -m pip install --upgrade pip wheel
+        python3 -m pip install -r requirements-dev.txt
       displayName: 'Install dependencies'
-    # - script: |
-    #     python3 -m pip install --upgrade pip wheel
-    #     python3 -m pip install -r requirements-dev.txt
-    #   displayName: 'Install dependencies'
     - bash:  $(pwd)/runtests.sh --clean
       displayName: 'Clean'
     - bash: $(pwd)/runtests.sh --isort
