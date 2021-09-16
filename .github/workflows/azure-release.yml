@@ -30,11 +30,11 @@ stages:
         python setup.py sdist bdist_wheel --build-number $(date +'%Y%m%d%H%M')
         tmp_dir=$(mktemp -d)
         cp dist/monailabel* "$tmp_dir"
+        cp dist/monailabel* /tmp
         rm -r build monailabel.egg-info
         cd "$tmp_dir"
         ls -al
-        pwd #debug 
-        # cp monailabel*.whl /tmp
+        cd /tmp && pwd && ls -al #debug 
       displayName: Prep
     - task: PublishPipelineArtifact@1 #this publishes the build artifact within Azure Pipelines
       inputs:
