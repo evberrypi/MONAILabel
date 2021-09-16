@@ -9,7 +9,7 @@ pr:
 stages:
 - stage: 'Test'
   jobs:
-  - job: Run-Tests
+  - job: runTests
     pool:
       vmImage: ubuntu-20.04
       strategy:
