@@ -49,7 +49,7 @@ stages:
         python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
         python -c 'import monailabel; print(monailabel.__file__)'
         python -m pip uninstall -y monailabel
-        cp monailabel*.tar.gz /tmp
+        cp monailabel*.whl /tmp
         rm monailabel*.tar.gz
 
 
