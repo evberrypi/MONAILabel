@@ -61,14 +61,10 @@ stages:
         rm -rf monailabel/
         ls -la .
       displayName: Build MONAI Label w OHIF
-    - task: CopyFiles@2
-      inputs:
-        targetFolder: '$(Build.ArtifactStagingDirectory)/dist/monailabel*.whl'
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)/dist/monailabel*.whl'
-        ArtifactName: 'monai-release'
-        # publishLocation: 'Container'
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)/dist/'
+        artifactName: 'monailabel*.whl'
     - task: GitHubRelease@0
       inputs:
         gitHubConnection: monailabel
