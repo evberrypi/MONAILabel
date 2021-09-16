@@ -33,6 +33,7 @@ stages:
         rm -r build monailabel.egg-info
         cd "$tmp_dir"
         ls -al
+        pwd #debug 
         # cp monailabel*.whl /tmp
       displayName: Prep
     - task: PublishPipelineArtifact@1 #this publishes the build artifact within Azure Pipelines
