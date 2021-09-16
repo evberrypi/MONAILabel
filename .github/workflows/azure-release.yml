@@ -33,12 +33,15 @@ stages:
         cp dist/monailabel* /tmp
         rm -r build monailabel.egg-info
         cd "$tmp_dir"
-
       displayName: Prep
-    - task: PublishPipelineArtifact@1 #this publishes the build artifact within Azure Pipelines
+    - task: CopyFiles@2
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/dist/monailabel*.whl
-        artifactName: monai-release
+        targetFolder: $(Build.ArtifactStagingDirectory)
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/dist'
+        ArtifactName: 'monai-release'
+        # publishLocation: 'Container'
     - script: |
         python -m pip install monailabel*.tar.gz
         python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
