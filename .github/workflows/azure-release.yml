@@ -64,8 +64,9 @@ stages:
     - task: PublishPipelineArtifact@1
       inputs:
         artifactType: 'filepath'
-        targetPath: '$(Build.ArtifactStagingDirectory)/dist/monailabel*.whl'
-        artifactName: 'monailabel*.whl'
+        targetPath: '$(Pipeline.Workspace)/dist'
+        # artifactName: 'monailabel*.whl'
+        fileSharePath: 'dist/'
     - task: GitHubRelease@0
       inputs:
         gitHubConnection: monailabel
@@ -74,4 +75,4 @@ stages:
         tagSource: 'manual'
         tag: 0.2.0
         addChangeLog: false 
-        assets: '$(Build.ArtifactStagingDirectory)/dist/monailabel*.whl'
+        assets: '$(Pipeline.Workspace)/dist/monailabel*.whl'
