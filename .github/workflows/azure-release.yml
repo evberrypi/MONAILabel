@@ -50,7 +50,7 @@ stages:
         python -c 'import monailabel; print(monailabel.__file__)'
         python -m pip uninstall -y monailabel
         cp monailabel*.whl /tmp
-        rm monailabel*.tar.gz
+        rm monailabel*.whl
 
 
         # install test utilities

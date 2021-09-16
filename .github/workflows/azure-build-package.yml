@@ -22,33 +22,36 @@ stages:
             python.version: '3.8'
           Python39:
             python.version: '3.9'
-        maxParallel: 1
+        maxParallel: 4
     steps:
-    - script: |
-        sudo apt install  -y python3-pip
-        python3 -m pip install --upgrade pip wheel
-        python3 -m pip install -r requirements-dev.txt
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+    - task: PythonScript@0
+      inputs:
+        scriptSource: 'inline'
+        script: |
+          pip install --upgrade pip wheel
+          pip install -r requirements-dev.txt
       displayName: 'Install dependencies'
-    - script: |
-        $(pwd)/runtests.sh --clean
+    # - script: |
+    #     python3 -m pip install --upgrade pip wheel
+    #     python3 -m pip install -r requirements-dev.txt
+    #   displayName: 'Install dependencies'
+    - bash:  $(pwd)/runtests.sh --clean
       displayName: 'Clean'
-    - script: |
-        $(pwd)/runtests.sh --isort
+    - bash: $(pwd)/runtests.sh --isort
       displayName: 'iSort'
-    - script: |
-        $(pwd)/runtests.sh --black
+    - bash: $(pwd)/runtests.sh --black
       displayName: 'Black'
     - script: |
         $(pwd)/runtests.sh --flake8
       displayName: 'Flake8'
-    - script: |
-        $(pwd)/runtests.sh --pytype
+    - bash:  $(pwd)/runtests.sh --pytype
       displayName: 'PyType'
-    - script: |
-        $(pwd)/runtests.sh --mypy
+    - bash:  $(pwd)/runtests.sh --mypy
       displayName: 'MyPy'
-    - script: |
-        $(pwd)/runtests.sh --unittests --coverage
+    - bash:  $(pwd)/runtests.sh --unittests --coverage
       displayName: 'Unit tests'
     - task: PublishCodeCoverageResults@1
       inputs:
