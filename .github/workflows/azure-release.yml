@@ -26,7 +26,7 @@ stages:
         set -e
 
         # move packages to a temp dir
-        export BUILD_OHIF=true
+        export BUILD_OHIF=false # TODO: change back to true
         python setup.py sdist bdist_wheel --build-number $(date +'%Y%m%d%H%M')
         tmp_dir=$(mktemp -d)
         cp dist/monailabel* "$tmp_dir"
@@ -34,26 +34,26 @@ stages:
         cd "$tmp_dir"
         ls -al
 
-        # install from tar.gz
-        python -m pip install monailabel*.tar.gz
-        python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
-        python -c 'import monailabel; print(monailabel.__file__)'
-        python -m pip uninstall -y monailabel
-        rm monailabel*.tar.gz
+        # # install from tar.gz
+        # python -m pip install monailabel*.tar.gz
+        # python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
+        # python -c 'import monailabel; print(monailabel.__file__)'
+        # python -m pip uninstall -y monailabel
+        # rm monailabel*.tar.gz
 
-        # install from wheel
-        python -m pip install monailabel*.whl
-        python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
-        python -c 'import monailabel; print(monailabel.__file__)'
-        python -m pip uninstall -y monailabel
-        rm monailabel*.whl
+        # # install from wheel
+        # python -m pip install monailabel*.whl
+        # python -c 'import monailabel; monailabel.print_config()' 2>&1 | grep -iv "unknown"
+        # python -c 'import monailabel; print(monailabel.__file__)'
+        # python -m pip uninstall -y monailabel
+        # rm monailabel*.whl
 
-        # install test utilities
-        python -m pip install pytest
+        # # install test utilities
+        # python -m pip install pytest
 
-        # start the monailabel server in the background
-        # and run the integration tests
-        $root_dir/runtests.sh --net
+        # # start the monailabel server in the background
+        # # and run the integration tests
+        # $root_dir/runtests.sh --net
 
         # cleanup
         cd "$root_dir"
@@ -63,10 +63,8 @@ stages:
       displayName: Build MONAI Label w OHIF
     - task: PublishPipelineArtifact@1
       inputs:
-        artifactType: 'filepath'
+        artifactType: 'pipeline'
         targetPath: '$(Pipeline.Workspace)/dist'
-        # artifactName: 'monailabel*.whl'
-        fileSharePath: 'dist/'
     - task: GitHubRelease@0
       inputs:
         gitHubConnection: monailabel
