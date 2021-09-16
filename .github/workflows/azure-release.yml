@@ -66,7 +66,7 @@ stages:
 
     - task: PublishPipelineArtifact@1 #this publishes the build artifact within Azure Pipelines
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/monailabel*.whl
+        targetPath: $(System.DefaultWorkingDirectory)/dist/monailabel*.whl
         artifactName: monai-release
     - task: GitHubRelease@0
       inputs:
@@ -77,4 +77,4 @@ stages:
         tagSource: 'manual'
         tag: 0.2.0
         addChangeLog: false 
-        assets: $(System.DefaultWorkingDirectory)/monailabel*.whl
+        assets: $(System.DefaultWorkingDirectory)/dist/monailabel*.whl
