@@ -15,13 +15,13 @@ stages:
       strategy:
         matrix:
           Python36:
-            python.version: '3.6'
+            python.version: '3.6.14'
           Python37:
-            python.version: '3.7'
+            python.version: '3.7.11'
           Python38:
-            python.version: '3.8'
+            python.version: '3.8.11'
           Python39:
-            python.version: '3.9'
+            python.version: '3.9.6'
         maxParallel: 4
     steps:
     - task: UsePythonVersion@0
