@@ -37,7 +37,7 @@ stages:
       displayName: Prep
     - task: PublishPipelineArtifact@1 #this publishes the build artifact within Azure Pipelines
       inputs:
-        targetPath: /dist/monailabel*.whl
+        targetPath: $(System.DefaultWorkingDirectory)/dist/monailabel*.whl
         artifactName: monai-release
     - script: |
         python -m pip install monailabel*.tar.gz
