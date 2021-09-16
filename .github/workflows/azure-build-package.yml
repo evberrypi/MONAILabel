@@ -1,5 +1,6 @@
 trigger:
 - main
+- '*'
 
 # no PR triggers: only committers to the main branch should be able to trigger these builds
 pr: 
